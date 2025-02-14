@@ -6,10 +6,9 @@ class driver;
   mailbox drv_2_mon_sync_mb;
     
   //constructor
-  function new(virtual DUT_intf DUT_virt_intf, mailbox gen_2_drv_mb,mailbox drv_2_mon_sync_mb);
+  function new(virtual DUT_intf DUT_virt_intf, mailbox gen_2_drv_mb);
     this.DUT_virt_intf = DUT_virt_intf;
     this.gen_2_drv_mb = gen_2_drv_mb;
-    this.drv_2_mon_sync_mb = drv_2_mon_sync_mb;
   endfunction
   
   
@@ -38,7 +37,6 @@ class driver;
       
       
       trans_cnt++;
-      drv_2_mon_sync_mb.put(trans_cnt);
     end
   endtask
          

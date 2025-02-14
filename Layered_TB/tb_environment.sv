@@ -12,7 +12,6 @@ class environment;
   scoreboard scb;
   mailbox   gen_2_drv_mb;
   mailbox   mon_2_scb_mb;
-  mailbox drv_2_mon_sync_mb;
   event gen_ended;
   virtual DUT_intf DUT_virt_intf;
   
@@ -21,10 +20,9 @@ class environment;
     this.DUT_virt_intf = DUT_virt_intf;
     gen_2_drv_mb = new();
     mon_2_scb_mb = new();
-    drv_2_mon_sync_mb= new();
     gen = new(gen_2_drv_mb, gen_ended);
-    driv = new(DUT_virt_intf, gen_2_drv_mb,drv_2_mon_sync_mb);
-    mon  = new(DUT_virt_intf, mon_2_scb_mb,drv_2_mon_sync_mb);
+    driv = new(DUT_virt_intf, gen_2_drv_mb);
+    mon  = new(DUT_virt_intf, mon_2_scb_mb);
     scb  = new(mon_2_scb_mb);
   endfunction
 
