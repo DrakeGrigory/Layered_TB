@@ -29,4 +29,8 @@ class transaction;
     this.constr_seq2.constraint_mode(constraint_mask[1]);
   endfunction
 
+
+  function set_opcode (bit[3:0] opcode);
+     this.opcode = opcode;
+  endfunction
 endclass

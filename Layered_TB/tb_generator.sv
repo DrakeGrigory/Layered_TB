@@ -34,7 +34,8 @@ task seq2();
       repeat(10)
       begin
         trans = new(8'h02);
-        trans.randomize();    
+        trans.randomize();
+        trans.set_opcode(4'd5);   
         gen_2_drv_mb.put(trans);
         i++;
         //$display("Trans: seq2: %0d inputed into mailbox",i); 
