@@ -4,7 +4,7 @@ program test(DUT_intf intf);
   initial 
   begin
     env = new(intf);
-    env.gen.repeat_tests = 5;
+    env.gen.repeat_tests = 10;
     env.run();
   end
 endprogram
