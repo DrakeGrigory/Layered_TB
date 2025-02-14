@@ -3,21 +3,18 @@ class monitor;
   virtual DUT_intf DUT_virt_intf;
   mailbox mon_2_scb_mb;
   int trans_cnt=0; 
-  int trans_cnt_driver = 0;
-  mailbox drv_2_mon_sync_mb;
+
   //constructor
-  function new(virtual DUT_intf DUT_virt_intf, mailbox mon_2_scb_mb);
+  function new(virtual DUT_intf DUT_virt_intf, mailbox mon_2_scb_mb );
     this.DUT_virt_intf = DUT_virt_intf;
     this.mon_2_scb_mb = mon_2_scb_mb;
   endfunction
   
   //++
   task main();
-    
     forever begin
       transaction trans;
       trans = new();
-
 
       @(posedge DUT_virt_intf.clk);
       

@@ -1,5 +1,6 @@
 
 `include "tb_transaction.sv"
+`define RAND_ITER 10
 
 class generator; 
   rand transaction trans;
@@ -11,14 +12,59 @@ class generator;
     this.gen_2_drv_mb = gen_2_drv_mb;
     this.trans_rdy = trans_rdy;
   endfunction
-  
-  task main();
-    repeat(repeat_tests)
-    begin
-      trans = new();
-      trans.randomize();    
-      gen_2_drv_mb.put(trans);
-    end
-   -> trans_rdy; 
-  endtask  
+   
+// --------------------------------------------------------------
+task seq1();
+    int i = 0;
+      repeat(10)
+      begin
+        trans = new();
+        trans.constr_data_in1.constraint_mode(1);
+        trans.randomize();    
+        gen_2_drv_mb.put(trans);
+        i++;
+        //$display("Trans: seq1: %0d inputed into mailbox",i); 
+      end
+    $display("seq2- tr_count: %0d inputed into mailbox",i); 
+endtask
+
+
+task seq2();
+    int i = 0;
+      repeat(10)
+      begin
+        trans = new();
+        trans.constr_data_in1.constraint_mode(0);
+        trans.randomize();    
+        gen_2_drv_mb.put(trans);
+        i++;
+        //$display("Trans: seq2: %0d inputed into mailbox",i); 
+      end
+    $display("seq2- tr_count: %0d inputed into mailbox",i); 
+    
+endtask
+
+
+
+
+
+
+task main();
+  seq1();
+  seq2();
+  -> trans_rdy;
+endtask  
+// --------------------------------------------------------------
+  // task main();
+  //   int i = 0;
+  //     repeat(repeat_tests)
+  //     begin
+  //       trans = new();
+  //       trans.randomize();    
+  //       gen_2_drv_mb.put(trans);
+  //       i++;
+  //     end
+  //   $display("Trans: count: %0d inputed into mailbox",i); 
+  //   -> trans_rdy;
+  // endtask  
 endclass

@@ -7,7 +7,8 @@ class transaction;
   rand bit        acc_ce; 
 
 
-  constraint constr_data_in  { data_in  == 8'h2F;    }
+  constraint constr_data_in1  { data_in inside {8'd25}; }
+  //constraint constr_data_in2  { data_in inside {[8'd50 : 8'd70]}; }
   constraint constr_opcode   { opcode   == 4'b0011;  }
   constraint constr_acc_ce   { acc_ce   == 1'b1;     }
 

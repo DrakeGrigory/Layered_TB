@@ -3,8 +3,10 @@ program test(DUT_intf intf);
   
   initial 
   begin
+    int repeat_tests =20;
     env = new(intf);
-    env.gen.repeat_tests = 10;
+    env.gen.repeat_tests = repeat_tests;
+    env.scb.repeat_tests = repeat_tests;
     env.run();
   end
 endprogram
