@@ -3,19 +3,26 @@ class monitor;
   virtual DUT_intf DUT_virt_intf;
   mailbox mon_2_scb_mb;
   int trans_cnt=0; 
-  
+  int trans_cnt_driver = 0;
+  mailbox drv_2_mon_sync_mb;
   //constructor
-  function new(virtual DUT_intf DUT_virt_intf, mailbox mon_2_scb_mb);
+  function new(virtual DUT_intf DUT_virt_intf, mailbox mon_2_scb_mb, mailbox drv_2_mon_sync_mb);
     this.DUT_virt_intf = DUT_virt_intf;
     this.mon_2_scb_mb = mon_2_scb_mb;
+    this.drv_2_mon_sync_mb = drv_2_mon_sync_mb;
   endfunction
   
   //++
-  task main;
-    forever
-    begin
+  task main();
+    
+    forever begin
       transaction trans;
       trans = new();
+
+      drv_2_mon_sync_mb.get(trans_cnt_driver);
+      wait((trans_cnt_driver)>trans_cnt);
+      $display("\n DRV: %0d    MON: %0d",trans_cnt_driver,trans_cnt);
+
 
       @(posedge DUT_virt_intf.clk);
       
