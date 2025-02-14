@@ -21,7 +21,6 @@ class scoreboard;
 
       if(trans.acc_ce && (trans.opcode != 4'h1) && (trans.opcode != 4'hF)) begin
         case(trans.opcode)
-          //1, 15 : {mem_cy,mem_data_out} = {mem_cy,mem_data_out};
           0 : {mem_cy,mem_data_out} = {1'b0, trans.data_in};
           2 : begin 
                 mem_data_out = mem_data_out + trans.data_in;   
@@ -42,12 +41,15 @@ class scoreboard;
       end
 
       
-      if((mem_data_out == trans.data_out) && (expected_cy == trans.cy)) begin
-        $display("[SCOREBOARD]: <OK> <data_out: d%0d  (0x%0h) == d%0d  (0x%0h)>,  <cy:  %b == %b> ", mem_data_out,mem_data_out,  trans.data_out,trans.data_out, expected_cy, trans.cy); 
+      if((mem_data_out != trans.data_out) && (expected_cy != trans.cy)) begin
+        $error("tr_%0d @%0.t [SCOREBOARD] FAIL: (exp/rcv) DATA_OUT: %0d (0x%0h) != %0d (0x%0h)    CY: %0b != %0b",trans_cnt,$time, mem_data_out,mem_data_out,  trans.data_out,trans.data_out, expected_cy, trans.cy);
+      end else if(mem_data_out != trans.data_out) begin
+      	$error("tr_%0d @%0.t [SCOREBOARD] FAIL: (exp/rcv) DATA_OUT: %0d (0x%0h) != %0d (0x%0h)",trans_cnt,$time, mem_data_out,mem_data_out,  trans.data_out,trans.data_out);
+      end else if(expected_cy != trans.cy) begin
+        $error("tr_%0d @%0.t [SCOREBOARD] FAIL: (exp/rcv)  CY: %0b != %0b",trans_cnt,$time, expected_cy, trans.cy);
       end else begin
-      	$error("[SCOREBOARD] Fail at time: %0.t, data expected: d%0d  (0x%0h), data actual: d%0d  (0x%0h) , cy expected: %b, cy actual: %b ", $time, mem_data_out,mem_data_out,  trans.data_out,trans.data_out, expected_cy, trans.cy);
-      end
-      
+        $display("tr_%0d @%0.t [SCOREBOARD] SUCCESS\n",trans_cnt,$time);
+      end      
       
       trans_cnt++;
     end

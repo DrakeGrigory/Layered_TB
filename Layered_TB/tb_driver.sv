@@ -32,7 +32,7 @@ class driver;
       DUT_virt_intf.opcode <= trans.opcode;
       DUT_virt_intf.acc_ce <= trans.acc_ce;
 
-      $display("[DRIVER] transfer %0d generated data in: %0h, alu operation value: %0h, ce: %b ", trans_cnt, trans.data_in, /*trans.alu_code.name(),*/ trans.opcode, trans.acc_ce);
+      $display("tr_%0d @%0.t  [DRIVER] CE: %0b   OPCODE: %0d   DATA_IN: %0d (0x%0h)", trans_cnt, $time, trans.acc_ce, trans.opcode, trans.data_in, trans.data_in);
       
       
       trans_cnt++;
