@@ -21,7 +21,7 @@ class scoreboard;
       mon_2_scb_mb.get(trans);
       
 
-      if(trans.acc_ce && (trans.opcode != 4'h1) && (trans.opcode != 4'hF)) begin
+      if(trans.acc_ce) begin
         case(trans.opcode)
           0 : {mem_cy,mem_data_out} = {1'b0, trans.data_in};
           2 : begin 
@@ -37,7 +37,8 @@ class scoreboard;
           4 : {mem_cy,mem_data_out} = {1'b0, mem_data_out & trans.data_in};
           5 : {mem_cy,mem_data_out} = {1'b0, mem_data_out | trans.data_in};
           6 : {mem_cy,mem_data_out} = {1'b0, mem_data_out ^ trans.data_in};
-          7 : {mem_cy,mem_data_out} = {1'b0, ~mem_data_out};
+          7 : {mem_cy,mem_data_out} = {1'b0, ~trans.data_in};
+          1,15: {mem_cy,mem_data_out} = {1'b0,8'd0};
 
           default : begin{mem_cy,mem_data_out} = {1'b0, 8'b0};end
         endcase
@@ -46,13 +47,13 @@ class scoreboard;
       expected_cy = mem_cy; //delaying cy by 1 cycle
       
       if((mem_data_out != trans.data_out) && (expected_cy != trans.cy)) begin
-        $display("tr_%0d @%0.t [SCOREBOARD] FAIL: (exp/rcv) DATA_OUT: %0d (0x%0h) != %0d (0x%0h)    CY: %0b != %0b",trans_cnt,$time, mem_data_out,mem_data_out,  trans.data_out,trans.data_out, expected_cy, trans.cy);
+        $display("tr_%0d @%0.t [SCOREBOARD] FAIL: (exp/rcv) DATA_OUT: %0d (0x%0h) != %0d (0x%0h)    CY: %0b != %0b\n",trans_cnt,$time, mem_data_out,mem_data_out,  trans.data_out,trans.data_out, expected_cy, trans.cy);
         stats[0]++;
       end else if(mem_data_out != trans.data_out) begin
-      	$display("tr_%0d @%0.t [SCOREBOARD] FAIL: (exp/rcv) DATA_OUT: %0d (0x%0h) != %0d (0x%0h)",trans_cnt,$time, mem_data_out,mem_data_out,  trans.data_out,trans.data_out);
+      	$display("tr_%0d @%0.t [SCOREBOARD] FAIL: (exp/rcv) DATA_OUT: %0d (0x%0h) != %0d (0x%0h)\n",trans_cnt,$time, mem_data_out,mem_data_out,  trans.data_out,trans.data_out);
         stats[1]++;
       end else if(expected_cy != trans.cy) begin
-        $display("tr_%0d @%0.t [SCOREBOARD] FAIL: (exp/rcv)  CY: %0b != %0b",trans_cnt,$time, expected_cy, trans.cy);
+        $display("tr_%0d @%0.t [SCOREBOARD] FAIL: (exp/rcv)  CY: %0b != %0b\n",trans_cnt,$time, expected_cy, trans.cy);
         stats[2]++;
       end else begin
         $display("tr_%0d @%0.t [SCOREBOARD] SUCCESS\n",trans_cnt,$time);
