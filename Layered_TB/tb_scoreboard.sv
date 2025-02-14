@@ -60,7 +60,7 @@ class scoreboard;
       end      
       
       trans_cnt++;
-      if(trans_cnt==repeat_tests) $display("[SCOREBOARD] SCORE: (done/exp) %0d/%0d\nFAIL: Both - %0d;  Data_out - %0d;  Cy - %0b;  \nSUCCESS: %0d",(stats[0]+stats[1]+stats[2]+stats[3]),repeat_tests,stats[0],stats[1],stats[2],stats[3]);
+      if(trans_cnt==repeat_tests) $display("[SCOREBOARD] SCORE: (done/exp) %0d/%0d\nFAIL: Both: %0d;  Data_out: %0d;  Cy: %0b;  \nSUCCESS: %0d",(stats[0]+stats[1]+stats[2]+stats[3]),repeat_tests,stats[0],stats[1],stats[2],stats[3]);
     end
   endtask
   

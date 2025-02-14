@@ -1,6 +1,6 @@
 
+
 `include "tb_transaction.sv"
-`define RAND_ITER 10
 
 class generator; 
   rand transaction trans;
@@ -14,18 +14,18 @@ class generator;
   endfunction
    
 // --------------------------------------------------------------
+
 task seq1();
     int i = 0;
       repeat(10)
       begin
-        trans = new();
-        trans.constr_data_in1.constraint_mode(1);
+        trans = new(8'h01);
         trans.randomize();    
         gen_2_drv_mb.put(trans);
         i++;
         //$display("Trans: seq1: %0d inputed into mailbox",i); 
       end
-    $display("seq2- tr_count: %0d inputed into mailbox",i); 
+    $display("seq1- tr_count: %0d inputed into mailbox",i); 
 endtask
 
 
@@ -33,8 +33,7 @@ task seq2();
     int i = 0;
       repeat(10)
       begin
-        trans = new();
-        trans.constr_data_in1.constraint_mode(0);
+        trans = new(8'h02);
         trans.randomize();    
         gen_2_drv_mb.put(trans);
         i++;
